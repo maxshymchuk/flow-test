@@ -9,6 +9,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "private": "true",
   "devDependencies": {
     "semantic-release": "^23.0.0"
   }
