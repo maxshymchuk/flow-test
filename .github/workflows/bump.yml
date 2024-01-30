@@ -33,6 +33,7 @@ jobs:
         run: |
           cd ${{ github.workspace }}
           git checkout ${{ inputs.branch }}
+          git pull
           current_version=$(node -p "require('./package.json').version")
           new_version=$(node -e "const semver = require('semver'); semver.inc('$current_version', '${{ inputs.version_bump }}')")
           npm version $new_version
