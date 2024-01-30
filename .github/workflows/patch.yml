@@ -30,11 +30,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
         run: |
           cd ${{ github.workspace }}
-          git pull
           current_version=$(node -p "require('./package.json').version")
           new_version=$(node -e "const semver = require('semver'); semver.inc('$current_version', 'patch')")
           npm version $new_version
           git config --global user.name 'Max Shymchuk'
           git config --global user.email 'octorix@mail.ru'
           git commit -am "Patch to $new_version"
-          git push origin HEAD:refs/heads/${{ github.head_ref }}
+          git push origin ${{ github.event.pull_request.base.ref }}
