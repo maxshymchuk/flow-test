@@ -37,7 +37,7 @@ jobs:
           git checkout ${{ inputs.branch }}
           current_version=$(node -p "require('./package.json').version")
           new_version=$(node -e "const semver = require('semver'); console.log(semver.inc('$current_version', '${{ inputs.version_bump }}'))")
-          npm version $new_version
+          npm version --no-git-tag-version $new_version
           git commit -am "Bump to $new_version"
           git push origin ${{ inputs.branch }}
           git tag -a $new_version -m "v$new_version"

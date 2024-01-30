@@ -38,6 +38,6 @@ jobs:
           current_version=$(node -p "require('./package.json').version")
           new_version=$(node -e "const semver = require('semver'); console.log(semver.inc('$current_version', 'major'))")
           git checkout -b release/${{ inputs.release_name }}
-          npm version $new_version
+          npm version --no-git-tag-version $new_version
           git commit -am "Release to $new_version"
           git push origin release/${{ inputs.release_name }}
