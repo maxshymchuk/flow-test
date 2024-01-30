@@ -1,0 +1,40 @@
+name: Bump Version and Create Tag
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Select the branch to bump'
+        required: true
+      version_bump:
+        description: 'Select version bump type (major, minor, or patch)'
+        required: true
+
+jobs:
+  bump_version:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install SemVer
+        run: npm install semver
+
+      - name: Bump version
+        run: |
+          cd ${{ github.workspace }}
+          git checkout ${{ inputs.branch }}
+          current_version=$(node -p "require('./package.json').version")
+          new_version=$(node -e "const semver = require('semver'); console.log(semver.inc($current_version, '${{ inputs.version_bump }}'))")
+          npm version $new_version
+          git commit -am "Bump to $new_version"
+          git push origin ${{ inputs.branch }}
+          git tag -a $new_version -m "v$new_version"
+          git push origin $new_version
