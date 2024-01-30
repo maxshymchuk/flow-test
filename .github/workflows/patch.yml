@@ -31,7 +31,7 @@ jobs:
         run: |
           cd ${{ github.workspace }}
           current_version=$(node -p "require('./package.json').version")
-          new_version=$(node -e "const semver = require('semver'); semver.inc('$current_version', 'patch')")
+          new_version=$(node -e "const semver = require('semver'); console.log(semver.inc('$current_version', 'patch'))")
           node -e "console.log('$current_version')"
           node -e "console.log('$new_version')"
           npm version $new_version

@@ -34,7 +34,7 @@ jobs:
           cd ${{ github.workspace }}
           git checkout ${{ inputs.branch }}
           current_version=$(node -p "require('./package.json').version")
-          new_version=$(node -e "const semver = require('semver'); semver.inc('$current_version', 'major')")
+          new_version=$(node -e "const semver = require('semver'); console.log(semver.inc('$current_version', 'major'))")
           git checkout -b release/${{ inputs.release_name }}
           npm version $new_version
           git config --global user.name 'Max Shymchuk'
