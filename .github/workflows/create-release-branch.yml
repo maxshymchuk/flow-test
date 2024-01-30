@@ -13,6 +13,8 @@ on:
 jobs:
   create_release_branch:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -26,6 +28,8 @@ jobs:
         run: npm install semver
 
       - name: Create release branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
         run: |
           cd ${{ github.workspace }}
           git checkout ${{ inputs.branch }}
@@ -37,5 +41,3 @@ jobs:
           git config --global user.email 'octorix@mail.ru'
           git commit -am "Release to $new_version"
           git push origin release/${{ inputs.release_name }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
