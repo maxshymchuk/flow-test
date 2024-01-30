@@ -31,13 +31,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
         run: |
+          git config user.name "Max Shymchuk"
+          git config user.email "octorix@mail.ru"
           cd ${{ github.workspace }}
           git checkout ${{ inputs.branch }}
           current_version=$(node -p "require('./package.json').version")
           new_version=$(node -e "const semver = require('semver'); console.log(semver.inc('$current_version', 'major'))")
           git checkout -b release/${{ inputs.release_name }}
           npm version $new_version
-          git config --global user.name "Max Shymchuk"
-          git config --global user.email "octorix@mail.ru"
           git commit -am "Release to $new_version"
           git push origin release/${{ inputs.release_name }}
