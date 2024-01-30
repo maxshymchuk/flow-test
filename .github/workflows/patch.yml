@@ -20,13 +20,16 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: 'lts/*'
+
+      - name: Install SemVer
+        run: npm install semver
 
       - name: Patch version
         run: |
           cd ${{ github.workspace }}
           current_version=$(node -p "require('./package.json').version")
-          new_version=$(node -e "const [major, minor, patch] = process.env.npm_package_version.split('.'); console.log(\`${major}.${minor}.$\{parseInt(patch) + 1\}\`)")
+          new_version=$(node -e "const semver = require('semver'); semver.inc($current_version, 'patch')")
           npm version $new_version
           git commit -am "Patch to $new_version"
           git push origin HEAD:refs/heads/${{ github.head_ref }}
