@@ -12,5 +12,8 @@
   "private": "true",
   "devDependencies": {
     "semantic-release": "^23.0.0"
+  },
+  "dependencies": {
+    "semver": "^7.5.4"
   }
 }
