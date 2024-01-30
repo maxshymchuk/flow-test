@@ -39,4 +39,4 @@ jobs:
           node -e "console.log('New version', '$new_version')"
           npm version $new_version
           git commit -am "Patch to $new_version"
-          git push origin ${{ github.event.pull_request.base.ref }}
+          git push origin origin/${{ github.event.pull_request.base.ref }}
